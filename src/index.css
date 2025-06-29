@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.surf-font {
+  font-family: Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-stretch: expanded;
+  transform: scaleX(1.2);
+}
