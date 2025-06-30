@@ -18,3 +18,17 @@
 ```bash
 npm install
 npm run dev
+
+## Production Build
+npm run build
+
+## Deployment
+This project is optimized for deployment on Netlify:
+Build Command: npm run build
+Publish Directory: dist
+
+## Tech Stack
+Frontend: React + TypeScript
+Backend: Supabase (PostgreSQL)
+Build Tool: Vite
+Hosting: Netlify
