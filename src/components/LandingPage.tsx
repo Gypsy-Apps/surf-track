@@ -152,19 +152,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToDashboard }) => {
       {/* Hero Section with Custom Background */}
       <div className="relative overflow-hidden min-h-screen">
         {/* Background Image */}
-       <video
-  autoPlay
-  muted
-  loop
-  playsInline
-  className="absolute inset-0 w-full h-full object-cover z-0"
->
-  <source src="/SurfTrack%20Advertising%20video.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
-
-{/* Overlay for better text readability */}
-<div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30 z-10"></div>
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('/Untitled (49).png')`,
+          }}
+        >
+          {/* Overlay for better text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"></div>
+        </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 min-h-screen flex items-center">
           <div className="w-full">
@@ -491,3 +487,4 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToDashboard }) => {
 };
 
 export default LandingPage;
+
