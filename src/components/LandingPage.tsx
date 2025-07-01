@@ -148,19 +148,22 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToDashboard }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
+    <div 
+      className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
       {/* Hero Section with Custom Background */}
       <div className="relative overflow-hidden min-h-screen">
         {/* Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('/Untitled (49).png')`,
-          }}
-        >
-          {/* Overlay for better text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"></div>
-        </div>
+  
+<div 
+  className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+  style={{
+    backgroundImage: `url('/landing-bg.png')`, // Update this path to match your image filename/location
+  }}
+>
+  {/* Overlay for better text readability */}
+  <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"></div>
+</div>
+
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 min-h-screen flex items-center">
           <div className="w-full">
