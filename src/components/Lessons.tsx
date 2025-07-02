@@ -926,9 +926,11 @@ const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
                 </div>
               </div>
             </div>
-          </div> {/* end of lesson card */}
+          </div>
+{/* end of lesson card */}
         ))}
-      </div> {/* end of lessons grid */}
+      </div>
+{/* end of lessons grid */}
 
       {filteredLessons.length === 0 && (
         <div className="text-center py-12">
