@@ -926,7 +926,7 @@ const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
                 </div>
               </div>
             </div>
-          </div>  {/* end of lesson card */}
+          </div> {/* end of lesson card */}
         ))}
       </div> {/* end of lessons grid */}
 
