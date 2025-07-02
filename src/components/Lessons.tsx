@@ -727,56 +727,49 @@ const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
       key={lesson.id} 
       className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 overflow-hidden hover:bg-white/15 transition-all duration-300"
     >
-      <div className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <h3 className="text-lg font-semibold text-white mb-1">{lesson.type}</h3>
-            <p className="text-cyan-200 text-sm">{lesson.instructor_name}</p>
-          </div>
-          <span className={`px-2 py-1 rounded-lg text-xs font-medium border ${getStatusColor(lesson.status)}`}>
-            {lesson.status.replace('-', ' ')}
-          </span>
-        </div>
-
-    <h3 className="text-lg font-semibold text-white mb-1">{lesson.type}</h3>
-    <p className="text-white/70 text-sm">{lesson.date} at {lesson.time}</p>
-    <p className="text-white/60 text-sm italic">{lesson.location}</p>
-    <p className="text-cyan-200 text-sm">{lesson.instructor_name}</p>
-    {lesson.participants && (
-      <p className="text-white/60 text-xs mt-1">
-        Participants: {lesson.participants.map((p) => p.name).join(", ")}
-      </p>
-    )}
-    {lesson.waiver_signed && (
-      <p className="text-green-400 text-xs mt-1">
-        Waiver signed ✅
-      </p>
-    )}
+<div className="p-6">
+  <div className="flex items-start justify-between mb-4">
+    <div>
+      <h3 className="text-lg font-semibold text-white mb-1">{lesson.type}</h3>
+      <p className="text-white/70 text-sm">{lesson.date} at {lesson.time}</p>
+      <p className="text-white/60 text-sm italic">{lesson.location}</p>
+      <p className="text-cyan-200 text-sm">{lesson.instructor_name}</p>
+      {lesson.participants && (
+        <p className="text-white/60 text-xs mt-1">
+          Participants: {lesson.participants.map((p) => p.name).join(", ")}
+        </p>
+      )}
+      {lesson.waiver_signed && (
+        <p className="text-green-400 text-xs mt-1">
+          Waiver signed ✅
+        </p>
+      )}
+    </div>
+    <span className={`px-2 py-1 rounded-lg text-xs font-medium border ${getStatusColor(lesson.status)}`}>
+      {lesson.status.replace('-', ' ')}
+    </span>
   </div>
-  <span className={`px-2 py-1 rounded-lg text-xs font-medium border ${getStatusColor(lesson.status)}`}>
-    {lesson.status.replace('-', ' ')}
-  </span>
-</div>
-{/* Action Buttons */}
-<div className="mt-4 flex gap-3">
-  <button
-    onClick={() => markLessonCompleted(lesson.id)}
-    className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md text-sm"
-  >
-    Mark as Completed
-  </button>
 
-  <button
-    onClick={() => {
-      setSelectedLesson(lesson);
-      setShowCommentModal(true);
-    }}
-    className="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md text-sm"
-  >
-    Add Comment
-  </button>
-</div>       
-      </div>
+  {/* ✅ Action Buttons go here, inside the same <div className="p-6"> */}
+  <div className="mt-4 flex gap-3">
+    <button
+      onClick={() => markLessonCompleted(lesson.id)}
+      className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md text-sm"
+    >
+      Mark as Completed
+    </button>
+
+    <button
+      onClick={() => {
+        setSelectedLesson(lesson);
+        setShowCommentModal(true);
+      }}
+      className="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md text-sm"
+    >
+      Add Comment
+    </button>
+  </div>
+</div>
     </div>
   ))}
 </div>
