@@ -737,7 +737,27 @@ const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
             {lesson.status.replace('-', ' ')}
           </span>
         </div>
-
+<div className="flex items-start justify-between mb-4">
+  <div>
+    <h3 className="text-lg font-semibold text-white mb-1">{lesson.type}</h3>
+    <p className="text-white/70 text-sm">{lesson.date} at {lesson.time}</p>
+    <p className="text-white/60 text-sm italic">{lesson.location}</p>
+    <p className="text-cyan-200 text-sm">{lesson.instructor_name}</p>
+    {lesson.participants && (
+      <p className="text-white/60 text-xs mt-1">
+        Participants: {lesson.participants.join(", ")}
+      </p>
+    )}
+    {lesson.waiver_signed && (
+      <p className="text-green-400 text-xs mt-1">
+        Waiver signed ✅
+      </p>
+    )}
+  </div>
+  <span className={`px-2 py-1 rounded-lg text-xs font-medium border ${getStatusColor(lesson.status)}`}>
+    {lesson.status.replace('-', ' ')}
+  </span>
+</div>
         {/* Action Buttons */}
         <div className="mt-4 flex gap-3">
           <button
