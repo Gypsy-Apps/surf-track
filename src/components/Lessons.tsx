@@ -731,9 +731,7 @@ const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
         <div className="flex items-start justify-between mb-4">
           <div>
             <h3 className="text-lg font-semibold text-white mb-1">{lesson.type}</h3>
-            <p className="text-white/70 text-sm">{lesson.date} at {lesson.time}</p>
-            <p className="text-white/60 text-sm italic">{lesson.location}</p>
-            <p className="text-cyan-200 text-sm mt-1">{lesson.instructor_name}</p>
+            <p className="text-cyan-200 text-sm">{lesson.instructor_name}</p>
           </div>
           <span className={`px-2 py-1 rounded-lg text-xs font-medium border ${getStatusColor(lesson.status)}`}>
             {lesson.status.replace('-', ' ')}
@@ -748,7 +746,6 @@ const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
           >
             Mark as Completed
           </button>
-
           <button
             className="px-3 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-500"
             onClick={() => {
@@ -763,173 +760,7 @@ const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
     </div>
   ))}
 </div>
-              
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-1">{lesson.type}</h3>
-                  <p className="text-cyan-200 text-sm">{lesson.instructor_name}</p>
-                </div>
-                <span className={`px-2 py-1 rounded-lg text-xs font-medium border ${getStatusColor(lesson.status)}`}>
-                  {lesson.status.replace('-', ' ')}
-                </span>
-              </div>
 
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center space-x-2 text-sm text-cyan-200">
-                  <Calendar className="h-4 w-4" />
-                  <span>{new Date(lesson.date).toLocaleDateString()}</span>
-                </div>
-                <div className="flex items-center space-x-2 text-sm text-cyan-200">
-                  <Clock className="h-4 w-4" />
-                  <span>{lesson.time}</span>
-                </div>
-                <div className="flex items-center space-x-2 text-sm text-cyan-200">
-                  <MapPin className="h-4 w-4" />
-                  <span>{lesson.location}</span>
-                </div>
-                <div className="flex items-center space-x-2 text-sm text-cyan-200">
-                  <Users className="h-4 w-4" />
-                  <span>{lesson.current_participants}/{lesson.max_participants} participants</span>
-                </div>
-                <div className="flex items-center space-x-2 text-sm text-cyan-200">
-                  <DollarSign className="h-4 w-4" />
-                  <span>${lesson.price}</span>
-                </div>
-              </div>
-
-              {lesson.notes && (
-                <p className="text-white/70 text-sm mb-4 italic">{lesson.notes}</p>
-              )}
-
-              {/* Participants Section */}
-              <div className="mb-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="text-sm font-medium text-cyan-200">Participants</h4>
-                  {lesson.status === 'scheduled' && lesson.current_participants < lesson.max_participants && (
-                    <button
-                      onClick={() => {
-                        setSelectedLesson(lesson);
-                        setShowAddParticipantModal(true);
-                      }}
-                      className="bg-blue-600 hover:bg-blue-700 text-white p-1 rounded transition-colors"
-                      title="Add Participant"
-                    >
-                      <UserPlus className="h-3 w-3" />
-                    </button>
-                  )}
-                </div>
-
-                {lesson.participants && lesson.participants.length > 0 ? (
-                  <div className="space-y-2">
-                    {lesson.participants.map((participant, index) => (
-                      <div key={index} className="bg-white/5 rounded-lg p-3 flex items-center justify-between">
-                        <div className="flex-1">
-                          <p className="text-white font-medium text-sm">{participant.customer_name}</p>
-                        </div>
-                        
-                        <div className="flex items-center space-x-2">
-                          {/* Waiver Status */}
-                          <div className="flex items-center space-x-1">
-                            {participant.waiver_collected ? (
-                              <CheckCircle className="h-3 w-3 text-green-400" />
-                            ) : (
-                              <AlertTriangle className="h-3 w-3 text-amber-400" />
-                            )}
-                          </div>
-
-                          {/* Action Buttons */}
-                          <div className="flex items-center space-x-1">
-                            {/* Waiver Button */}
-                            {!participant.waiver_collected && lesson.status === 'scheduled' && (
-                              <button
-                                onClick={() => handleOpenWaiverForParticipant(lesson, participant)}
-                                className="bg-orange-600 hover:bg-orange-700 text-white p-1 rounded transition-colors"
-                                title="Collect Waiver"
-                              >
-                                <FileText className="h-3 w-3" />
-                              </button>
-                            )}
-
-                            {/* View Profile Button */}
-                            <button
-                              onClick={() => handleViewCustomerProfile(participant.customer_id)}
-                              className="bg-purple-600 hover:bg-purple-700 text-white p-1 rounded transition-colors"
-                              title="View Profile"
-                            >
-                              <Eye className="h-3 w-3" />
-                            </button>
-
-                            {/* Remove Participant Button */}
-                            {lesson.status === 'scheduled' && (
-                              <button
-                                onClick={() => handleRemoveParticipant(lesson.id, participant.customer_id)}
-                                className="bg-red-600 hover:bg-red-700 text-white p-1 rounded transition-colors"
-                                title="Remove Participant"
-                              >
-                                <UserMinus className="h-3 w-3" />
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-4">
-                    <p className="text-cyan-200 text-sm">No participants yet</p>
-                    {lesson.status === 'scheduled' && (
-                      <button
-                        onClick={() => {
-                          setSelectedLesson(lesson);
-                          setShowAddParticipantModal(true);
-                        }}
-                        className="text-cyan-400 hover:text-cyan-300 text-sm mt-1"
-                      >
-                        Add first participant
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-4 border-t border-white/20">
-                <div className="flex space-x-2">
-                  {lesson.status === 'scheduled' && (
-                    <button
-                      onClick={() => {
-                        setSelectedLesson(lesson);
-                        setCancellationData(prev => ({
-                          ...prev,
-                          totalRevenue: lesson.price * lesson.current_participants,
-                          participantCount: lesson.current_participants,
-                          originalPrice: lesson.price
-                        }));
-                        setShowCancelModal(true);
-                      }}
-                      className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition-colors"
-                      title="Cancel Lesson"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  )}
-                </div>
-
-                <div className="flex space-x-2">
-                  <button
-                    onClick={() => handleDeleteLesson(lesson.id)}
-                    className="bg-gray-600 hover:bg-gray-700 text-white p-2 rounded-lg transition-colors"
-                    title="Delete Lesson"
-                  >
-                        <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-{/* end of lesson card */}
-        ))}
-      </div>
 {/* end of lessons grid */}
 
       {filteredLessons.length === 0 && (
