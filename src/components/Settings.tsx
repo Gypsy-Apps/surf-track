@@ -99,7 +99,7 @@ const Settings = () => {
             <label className="block text-sm font-medium text-cyan-200 mb-2">Business Name</label>
             <input
               type="text"
-              value={settings.business.name}
+             value={settings?.business?.name || ''}
               onChange={(e) => updateSetting('business.name', e.target.value)}
               className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400"
             />
@@ -108,7 +108,7 @@ const Settings = () => {
             <label className="block text-sm font-medium text-cyan-200 mb-2">Phone</label>
             <input
               type="text"
-              value={settings.business.phone}
+              value={settings?.business?.phone || ''}
               onChange={(e) => updateSetting('business.phone', e.target.value)}
               className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400"
             />
@@ -117,7 +117,7 @@ const Settings = () => {
             <label className="block text-sm font-medium text-cyan-200 mb-2">Email</label>
             <input
               type="email"
-              value={settings.business.email}
+              value={settings?.business?.email || ''}}
               onChange={(e) => updateSetting('business.email', e.target.value)}
               className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400"
             />
@@ -126,7 +126,7 @@ const Settings = () => {
             <label className="block text-sm font-medium text-cyan-200 mb-2">Website</label>
             <input
               type="text"
-              value={settings.business.website}
+              value={settings?.business?.website || ''}
               onChange={(e) => updateSetting('business.website', e.target.value)}
               className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400"
             />
@@ -135,7 +135,7 @@ const Settings = () => {
         <div className="mt-4">
           <label className="block text-sm font-medium text-cyan-200 mb-2">Address</label>
           <textarea
-            value={settings.business.address}
+            value={settings?.business?.address || ''}
             onChange={(e) => updateSetting('business.address', e.target.value)}
             rows={2}
             className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400"
@@ -146,7 +146,7 @@ const Settings = () => {
       <div>
         <h3 className="text-lg font-semibold text-white mb-4">Lesson Locations</h3>
         <div className="space-y-2">
-          {settings.business.locations.map((location, index) => (
+          {settings?.business?.locations?.map((location, index) => (
             <div key={index} className="flex items-center space-x-2">
               <input
                 type="text"
