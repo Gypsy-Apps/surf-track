@@ -737,8 +737,7 @@ const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
             {lesson.status.replace('-', ' ')}
           </span>
         </div>
-<div className="flex items-start justify-between mb-4">
-  <div>
+
     <h3 className="text-lg font-semibold text-white mb-1">{lesson.type}</h3>
     <p className="text-white/70 text-sm">{lesson.date} at {lesson.time}</p>
     <p className="text-white/60 text-sm italic">{lesson.location}</p>
