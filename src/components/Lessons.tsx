@@ -921,14 +921,14 @@ const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
                     className="bg-gray-600 hover:bg-gray-700 text-white p-2 rounded-lg transition-colors"
                     title="Delete Lesson"
                   >
-                    <Trash2 className="h-4 w-4" />
+                        <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
               </div>
             </div>
-          </div>
+          </div>  {/* end of lesson card */}
         ))}
-      </div>
+      </div> {/* end of lessons grid */}
 
       {filteredLessons.length === 0 && (
         <div className="text-center py-12">
