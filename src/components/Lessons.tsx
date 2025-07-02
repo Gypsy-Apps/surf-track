@@ -734,6 +734,24 @@ const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
                   {lesson.status.replace('-', ' ')}
                 </span>
               </div>
+<div className="mt-4 flex gap-3">
+  <button
+    onClick={() => markLessonCompleted(lesson.id)}
+    className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md text-sm"
+  >
+    Mark as Completed
+  </button>
+
+  <button
+    onClick={() => {
+      setSelectedLesson(lesson);
+      setShowCommentModal(true);
+    }}
+    className="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md text-sm"
+  >
+    Add Comment
+  </button>
+</div>
 
               <div className="space-y-2 mb-4">
                 <div className="flex items-center space-x-2 text-sm text-cyan-200">
