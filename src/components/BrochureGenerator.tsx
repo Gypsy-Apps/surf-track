@@ -20,8 +20,8 @@ const BrochureGenerator: React.FC<BrochureGeneratorProps> = ({ onClose }) => {
     try {
       // Instead of generating a PDF, we'll now just download the PNG file directly
       const link = document.createElement('a');
-      link.href = '/Surf Track Brochure copy.png';
-      link.download = 'Surf_Track_Brochure.png';
+     link.href = '/surf-track-brochure.pdf';
+link.download = 'Surf_Track_Brochure.pdf';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -112,14 +112,14 @@ const BrochureGenerator: React.FC<BrochureGeneratorProps> = ({ onClose }) => {
               ) : (
                 <>
                   <Download className="h-5 w-5" />
-                  <span>Download Brochure (PNG)</span>
+          <span>Download Brochure (PDF)</span>
                 </>
               )}
             </button>
           </div>
 
           <p className="text-center text-cyan-300 text-xs mt-4">
-            The brochure will be automatically downloaded as "Surf_Track_Brochure.png"
+          The brochure will be automatically downloaded as "Surf_Track_Brochure.pdf"
           </p>
         </div>
       </div>
