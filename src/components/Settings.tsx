@@ -117,7 +117,7 @@ const Settings = () => {
             <label className="block text-sm font-medium text-cyan-200 mb-2">Email</label>
             <input
               type="email"
-              value={settings?.business?.email || ''}}
+              value={settings?.business?.email || ''}
               onChange={(e) => updateSetting('business.email', e.target.value)}
               className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400"
             />
