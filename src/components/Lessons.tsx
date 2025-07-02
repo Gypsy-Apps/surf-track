@@ -745,7 +745,7 @@ const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
     <p className="text-cyan-200 text-sm">{lesson.instructor_name}</p>
     {lesson.participants && (
       <p className="text-white/60 text-xs mt-1">
-        Participants: {lesson.participants.join(", ")}
+        Participants: {lesson.participants.map((p) => p.name).join(", ")}
       </p>
     )}
     {lesson.waiver_signed && (
