@@ -195,19 +195,21 @@ const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
     }
   };
 
-  const handleOpenWaiverForParticipant = async (lesson: Lesson, participant: any) => {
+const handleOpenWaiverForParticipant = async (lesson: Lesson, participant: any) => {
   try {
     // Get full customer details
     const customer = await customerService.getCustomer(participant.customer_id);
     const activities = settingsService.getRequiredActivities('lesson');
 
-    console.log('🎯 Opening waiver for participant:', {
-      participantName: participant.customer_name,
-      customerId: participant.customer_id,
-      customerData: customer,
-      lessonId: lesson.id,
-      activities
-    });
+    // Launch waiver with required data
+    onOpenWaiver(participant.customer_name, activities, lesson.id, participant.customer_id);
+  } catch (error) {
+    console.error('Error loading customer data for waiver:', error);
+
+    // Fallback if customer fetch fails
+    onOpenWaiver(participant.customer_name, [], lesson.id, participant.customer_id);
+  }
+};
 
     // ✅ Navigate to the waiver creation page with state
     navigate('/waivers/new', {
