@@ -130,7 +130,7 @@ const Waivers: React.FC<WaiversProps> = ({
 // Auto-fill waiver data when lesson is loaded
 useEffect(() => {
   if (lesson) {
-    const participant = lesson.participants?.[0]; // Adjust if needed
+    const participant = lesson.participants?.[0];
     if (participant) {
       setParticipantName(participant.name || '');
       setGuardianName(participant.guardian_name || '');
@@ -151,19 +151,22 @@ useEffect(() => {
     }
   }
 }, [showModal, customerId]);
-      
-      setFormData(prev => ({
-        ...prev,
-        customer_id: customerId,
-        customer_name: prefilledCustomerName,
-        activities: prefilledActivities,
-        lesson_id: lessonId,
-        waiver_text: prefilledActivities.includes('Surf Lessons') 
-          ? settingsService.getWaiverText('lesson')
-          : settingsService.getWaiverText('rental')
-      }));
-    }
-  }, [showModal, prefilledCustomerName, prefilledActivities, lessonId, customerId]);
+
+// Pre-fill form data based on props
+useEffect(() => {
+  if (showModal) {
+    setFormData(prev => ({
+      ...prev,
+      customer_id: customerId,
+      customer_name: prefilledCustomerName,
+      activities: prefilledActivities,
+      lesson_id: lessonId,
+      waiver_text: prefilledActivities.includes('Surf Lessons') 
+        ? settingsService.getWaiverText('lesson')
+        : settingsService.getWaiverText('rental')
+    }));
+  }
+}, [showModal, prefilledCustomerName, prefilledActivities, lessonId, customerId]);
 
   const loadCustomerData = async (customerIdToLoad: string) => {
     try {
