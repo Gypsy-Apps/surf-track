@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // ✅ Correctly placed
-
-import {
+import { 
   Plus, 
   Calendar, 
   Clock, 
@@ -27,18 +25,16 @@ import {
   UserPlus,
   UserMinus
 } from 'lucide-react';
-
 import { lessonsService, Lesson, CreateLessonData, CancellationData } from '../lib/lessonsService';
 import { instructorsService, Instructor } from '../lib/instructorsService';
-import { customerService } from '../lib/supabase'; // ✅ KEEP THIS ONE
-import { settingsService } from '../lib/settingsService'; // ✅ KEEP THIS ONE
+import { customerService } from '../lib/supabase';
+import { settingsService } from '../lib/settingsService';
 
 interface LessonsProps {
   onOpenWaiver: (customerName: string, activities: string[], lessonId?: string, customerId?: string) => void;
 }
 
 const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
-  const navigate = useNavigate();
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [instructors, setInstructors] = useState<Instructor[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
@@ -195,21 +191,29 @@ const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
     }
   };
 
-const handleOpenWaiverForParticipant = async (lesson: Lesson, participant: any) => {
-  try {
-    const customer = await customerService.getCustomer(participant.customer_id);
-    const activities = settingsService.getRequiredActivities('lesson');
-
-    // Pass the customer ID so the waiver can pre-populate with customer data
-    onOpenWaiver(participant.customer_name, activities, lesson.id, participant.customer_id);
-  } catch (error) {
-    console.error('Error loading customer data for waiver:', error);
-
-    // Fallback if customer load fails
-    const activities = settingsService.getRequiredActivities('lesson');
-    onOpenWaiver(participant.customer_name, activities, lesson.id);
-  }
-};
+  const handleOpenWaiverForParticipant = async (lesson: Lesson, participant: any) => {
+    try {
+      // Get the full customer details to pass to waiver
+      const customer = await customerService.getCustomer(participant.customer_id);
+      const activities = settingsService.getRequiredActivities('lesson');
+      
+      console.log('🎯 Opening waiver for participant:', {
+        participantName: participant.customer_name,
+        customerId: participant.customer_id,
+        customerData: customer,
+        lessonId: lesson.id,
+        activities
+      });
+      
+      // Pass the customer ID so the waiver can pre-populate with customer data
+      onOpenWaiver(participant.customer_name, activities, lesson.id, participant.customer_id);
+    } catch (error) {
+      console.error('Error loading customer data for waiver:', error);
+      // Fallback to just the participant name
+      const activities = settingsService.getRequiredActivities('lesson');
+      onOpenWaiver(participant.customer_name, activities, lesson.id);
+    }
+  };
 
   const handleAddParticipant = async (customer: any) => {
     if (!selectedLesson) return;
@@ -730,24 +734,6 @@ const handleOpenWaiverForParticipant = async (lesson: Lesson, participant: any) 
                   {lesson.status.replace('-', ' ')}
                 </span>
               </div>
-<div className="mt-4 flex gap-3">
-  <button
-    onClick={() => markLessonCompleted(lesson.id)}
-    className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md text-sm"
-  >
-    Mark as Completed
-  </button>
-
-  <button
-    onClick={() => {
-      setSelectedLesson(lesson);
-      setShowCommentModal(true);
-    }}
-    className="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md text-sm"
-  >
-    Add Comment
-  </button>
-</div>
 
               <div className="space-y-2 mb-4">
                 <div className="flex items-center space-x-2 text-sm text-cyan-200">
