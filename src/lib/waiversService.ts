@@ -491,4 +491,133 @@ export const waiversService = {
     const report = {
       totalWaivers: data.length,
       activeWaivers: data.filter(w => {
-       *
+        if (w.status !== 'signed' || !w.expiry_date) return false;
+        return new Date(w.expiry_date) >= now;
+      }).length,
+      expiredLast30Days: data.filter(w => {
+        if (!w.expiry_date) return false;
+        const expiryDate = new Date(w.expiry_date);
+        return expiryDate < now && expiryDate >= thirtyDaysAgo;
+      }).length,
+      expiredLast60Days: data.filter(w => {
+        if (!w.expiry_date) return false;
+        const expiryDate = new Date(w.expiry_date);
+        return expiryDate < thirtyDaysAgo && expiryDate >= sixtyDaysAgo;
+      }).length,
+      expiredLast90Days: data.filter(w => {
+        if (!w.expiry_date) return false;
+        const expiryDate = new Date(w.expiry_date);
+        return expiryDate < sixtyDaysAgo && expiryDate >= ninetyDaysAgo;
+      }).length,
+      readyForArchiving: data.filter(w => {
+        if (!w.expiry_date) return false;
+        const expiryDate = new Date(w.expiry_date);
+        return expiryDate < thirtyDaysAgo;
+      }).length
+    };
+    return report;
+  },
+
+  async linkWaiverToLesson(waiverId: string, lessonId: string) {
+    const { data, error } = await supabase
+      .from('waivers')
+      .update({ lesson_id: lessonId })
+      .eq('id', waiverId)
+      .select()
+      .single();
+    if (error) throw error;
+    return data as Waiver;
+  },
+
+  async linkWaiverToRental(waiverId: string, rentalId: string) {
+    const { data, error } = await supabase
+      .from('waivers')
+      .update({ rental_id: rentalId })
+      .eq('id', waiverId)
+      .select()
+      .single();
+    if (error) throw error;
+    return data as Waiver;
+  },
+
+  async findOrCreateCustomer(waiverData: CreateWaiverData) {
+    const { data: existingCustomer, error: searchError } = await supabase
+      .from('customers')
+      .select('*')
+      .eq('email', waiverData.email)
+      .single();
+    if (searchError && searchError.code !== 'PGRST116') {
+      throw searchError;
+    }
+    if (existingCustomer) {
+      const customerUpdates: any = {
+        waiver_signed: true,
+        waiver_expiry_date: null
+      };
+      if (!existingCustomer.date_of_birth && waiverData.date_of_birth) {
+        customerUpdates.date_of_birth = waiverData.date_of_birth;
+      }
+      if (!existingCustomer.emergency_contact_name && waiverData.emergency_contact_name) {
+        customerUpdates.emergency_contact_name = waiverData.emergency_contact_name;
+      }
+      if (!existingCustomer.emergency_contact_phone && waiverData.emergency_contact_phone) {
+        customerUpdates.emergency_contact_phone = waiverData.emergency_contact_phone;
+      }
+      if (existingCustomer.email !== waiverData.email) {
+        customerUpdates.email = waiverData.email;
+      }
+      if (existingCustomer.phone !== waiverData.phone) {
+        customerUpdates.phone = waiverData.phone;
+      }
+      await customerService.updateCustomer(existingCustomer.id, customerUpdates);
+      console.log('✅ Existing customer profile updated with waiver information:', {
+        customerId: existingCustomer.id,
+        updatedFields: Object.keys(customerUpdates)
+      });
+      return existingCustomer.id;
+    }
+    const { data: newCustomer, error: createError } = await supabase
+      .from('customers')
+      .insert([{
+        full_name: waiverData.customer_name,
+        email: waiverData.email,
+        phone: waiverData.phone,
+        date_of_birth: waiverData.date_of_birth,
+        emergency_contact_name: waiverData.emergency_contact_name,
+        emergency_contact_phone: waiverData.emergency_contact_phone,
+        preferred_activities: waiverData.activities,
+        waiver_signed: true,
+        status: 'active'
+      }])
+      .select()
+      .single();
+    if (createError) throw createError;
+    console.log('✅ New customer created with complete waiver information:', {
+      customerId: newCustomer.id,
+      name: newCustomer.full_name
+    });
+    return newCustomer.id;
+  },
+
+  async saveWaiverDraft(waiverData: Partial<CreateWaiverData>) {
+    if (!waiverData.customer_name || !waiverData.email) {
+      throw new Error('Customer name and email are required to save a draft waiver');
+    }
+    const waiver = {
+      ...waiverData,
+      status: 'pending' as const,
+      notes: (waiverData.notes || '') + ' [Draft saved]'
+    };
+    const { data, error } = await supabase
+      .from('waivers')
+      .insert([waiver])
+      .select()
+      .single();
+    if (error) throw error;
+    console.log('✅ Waiver draft saved:', {
+      waiverId: data.id,
+      customerName: data.customer_name
+    });
+    return data as Waiver;
+  }
+};
