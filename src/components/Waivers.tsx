@@ -127,9 +127,10 @@ const Waivers: React.FC<WaiversProps> = ({
     };
   }, [showCreateModal, formModified]);
 
+// Auto-fill waiver data when lesson is loaded
 useEffect(() => {
   if (lesson) {
-    const participant = lesson.participants?.[0]; // Adjust if you allow selecting a specific participant
+    const participant = lesson.participants?.[0]; // Adjust if needed
     if (participant) {
       setParticipantName(participant.name || '');
       setGuardianName(participant.guardian_name || '');
@@ -140,6 +141,7 @@ useEffect(() => {
   }
 }, [lesson]);
 
+// Show modal & load customer data if available
 useEffect(() => {
   if (showModal) {
     setShowCreateModal(true);
@@ -147,8 +149,8 @@ useEffect(() => {
     if (customerId) {
       loadCustomerData(customerId);
     }
-  } 
-}, [showModal, prefilledCustomerName, prefilledActivities, lessonId, customerId]);
+  }
+}, [showModal, customerId]);
       
       setFormData(prev => ({
         ...prev,
