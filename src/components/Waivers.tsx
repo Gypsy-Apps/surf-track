@@ -127,14 +127,29 @@ const Waivers: React.FC<WaiversProps> = ({
     };
   }, [showCreateModal, formModified]);
 
-  useEffect(() => {
-    if (showModal) {
-      setShowCreateModal(true);
-      
-      // If we have a customer ID, load their data
-      if (customerId) {
-        loadCustomerData(customerId);
-      }
+useEffect(() => {
+  if (lesson) {
+    const participant = lesson.participants?.[0]; // Adjust if you allow selecting a specific participant
+    if (participant) {
+      setParticipantName(participant.name || '');
+      setGuardianName(participant.guardian_name || '');
+      setBirthDate(participant.birth_date || '');
+      setEmergencyContact(participant.emergency_contact || '');
+      setEmergencyPhone(participant.emergency_phone || '');
+    }
+  }
+}, [lesson]);
+
+useEffect(() => {
+  if (showModal) {
+    setShowCreateModal(true);
+
+    // If we have a customer ID, load their data
+    if (customerId) {
+      loadCustomerData(customerId);
+    }
+  }
+}, [showModal, customerId]);
       
       setFormData(prev => ({
         ...prev,
