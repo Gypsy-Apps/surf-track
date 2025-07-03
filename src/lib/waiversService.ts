@@ -142,8 +142,6 @@ async createWaiver(waiverData: CreateWaiverData) {
 
   return data as Waiver;
 }
-
-    const activityType = isLessonWaiver ? 'lesson' : 'rental';
     
     // Calculate expiry date based on activity type settings
     const today = new Date();
