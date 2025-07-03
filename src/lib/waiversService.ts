@@ -107,12 +107,42 @@ export const waiversService = {
     return data as Waiver[];
   },
 
-  // Create new waiver with customer profile sync and activity-specific expiry
-  async createWaiver(waiverData: CreateWaiverData) {
-    // Determine activity type for expiry calculation
-    const isLessonWaiver = waiverData.activities.some(activity => 
-      activity.toLowerCase().includes('lesson') || activity.toLowerCase().includes('instruction')
-    );
+ // Create new waiver with customer profile sync and activity-specific expiry
+async createWaiver(waiverData: CreateWaiverData) {
+  const isLessonWaiver = waiverData.activities.some(activity =>
+    activity.toLowerCase().includes('lesson') || activity.toLowerCase().includes('instruction')
+  );
+
+  const expiryDate = this.calculateExpiryDate(isLessonWaiver);
+
+  const waiver = {
+    ...waiverData,
+    created_at: new Date().toISOString(),
+    expiry_date: expiryDate,
+  };
+
+  const { data, error } = await supabase
+    .from('waivers')
+    .insert([waiver])
+    .select()
+    .single();
+
+  // 🔍 Add this check and log
+  if (error) {
+    console.error('Supabase waiver insert error:', error);
+    throw error;
+  }
+
+  if (!data) {
+    console.error('⚠️ Waiver created but no data returned from Supabase');
+    throw new Error('Waiver creation succeeded but no data returned.');
+  }
+
+  console.log('✅ Waiver successfully created and returned:', data);
+
+  return data as Waiver;
+}
+
     const activityType = isLessonWaiver ? 'lesson' : 'rental';
     
     // Calculate expiry date based on activity type settings
