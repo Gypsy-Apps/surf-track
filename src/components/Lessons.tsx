@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { 
+import { useNavigate } from 'react-router-dom'; // ✅ Correctly placed
+
+import {
   Plus, 
   Calendar, 
   Clock, 
@@ -25,16 +27,18 @@ import {
   UserPlus,
   UserMinus
 } from 'lucide-react';
+
 import { lessonsService, Lesson, CreateLessonData, CancellationData } from '../lib/lessonsService';
 import { instructorsService, Instructor } from '../lib/instructorsService';
-import { customerService } from '../lib/supabase';
-import { settingsService } from '../lib/settingsService';
+import { customerService } from '../lib/supabase'; // ✅ KEEP THIS ONE
+import { settingsService } from '../lib/settingsService'; // ✅ KEEP THIS ONE
 
 interface LessonsProps {
   onOpenWaiver: (customerName: string, activities: string[], lessonId?: string, customerId?: string) => void;
 }
 
 const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
+  const navigate = useNavigate();
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [instructors, setInstructors] = useState<Instructor[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
@@ -192,11 +196,33 @@ const Lessons: React.FC<LessonsProps> = ({ onOpenWaiver }) => {
   };
 
   const handleOpenWaiverForParticipant = async (lesson: Lesson, participant: any) => {
-    try {
-      // Get the full customer details to pass to waiver
-      const customer = await customerService.getCustomer(participant.customer_id);
-      const activities = settingsService.getRequiredActivities('lesson');
-      
+  try {
+    // Get full customer details
+    const customer = await customerService.getCustomer(participant.customer_id);
+    const activities = settingsService.getRequiredActivities('lesson');
+
+    console.log('🎯 Opening waiver for participant:', {
+      participantName: participant.customer_name,
+      customerId: participant.customer_id,
+      customerData: customer,
+      lessonId: lesson.id,
+      activities
+    });
+
+    // ✅ Navigate to the waiver creation page with state
+    navigate('/waivers/new', {
+      state: {
+        prefilledCustomerName: participant.customer_name,
+        customerId: participant.customer_id,
+        lessonId: lesson.id,
+        prefilledActivities: activities,
+      },
+    });
+  } catch (error) {
+    console.error('Error preparing waiver:', error);
+  }
+};
+
       console.log('🎯 Opening waiver for participant:', {
         participantName: participant.customer_name,
         customerId: participant.customer_id,
