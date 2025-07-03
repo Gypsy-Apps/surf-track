@@ -141,13 +141,7 @@ async createWaiver(waiverData: CreateWaiverData) {
   console.log('✅ Waiver successfully created and returned:', data);
 
   return data as Waiver;
-}
-    
-    // Calculate expiry date based on activity type settings
-    const today = new Date();
-    const expiryDate = new Date(today);
-    const expiryPeriod = settingsService.getWaiverExpiryPeriod(activityType);
-    expiryDate.setDate(today.getDate() + expiryPeriod);
+} // ← End of function, nothing should come after this
     
     // Format as YYYY-MM-DD to ensure correct date
     const expiryDateString = expiryDate.toISOString().split('T')[0];
