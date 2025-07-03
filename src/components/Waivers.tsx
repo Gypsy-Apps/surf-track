@@ -144,12 +144,11 @@ useEffect(() => {
   if (showModal) {
     setShowCreateModal(true);
 
-    // If we have a customer ID, load their data
     if (customerId) {
       loadCustomerData(customerId);
     }
-  }
-}, [showModal, customerId]);
+  } 
+}, [showModal, prefilledCustomerName, prefilledActivities, lessonId, customerId]);
       
       setFormData(prev => ({
         ...prev,
